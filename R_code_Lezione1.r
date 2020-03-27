@@ -1,9 +1,13 @@
-library(sp) #installiamo la nuova libreria tramite i pacchetti;
+#installiamo la nuova libreria tramite i pacchetti;
+library(sp) 
 
+#usiamo il comando data per vedere i dati
 data("meuse")
 
+#vediamo la tabella meuse
 meuse
 
+#vediamo solo le prime 6 righe della tabella
 head(meuse) #vediamo i primi 6
 
 names(meuse)
