@@ -53,6 +53,25 @@ plot(d)
 #aggiungiamo i punti al plot
 points(covids)
 
+#salviamo il file in .Rdata
+#richiamiamo la nostra WD e successivamente carichiamo il salvataggio che abbiamo effettuato precedentemente
+
+#cambiamo i colori, palette, numero di livelli si specifica con una parentesi esterna, per usare questa funzione usiamo la libreria spatstat
+cl <- colorRampPalette(c("yellow","orange","red"))(100)
+plot(d,col=cl)
+
+#exercise: cambiamo i colori del grafico in blu e verde
+cl2 <- colorRampPalette(c("green","turquoise","blue"))(100)
+plot(d,col=cl2)
+
+#per completare la mappa aggiungiamo i bordi dei vari paesi; usiamo la libreria rgdal, scarichiamo un nuovo pacchetto di dati delle coste in vettore
+library(rgdal)
+coastlines <- readOGR("ne_10m_coastline.shp")
+
+#per avere il nostro grafico completo useremo questo comando;
+plot(coastlines, add=T)
+
+
 
 
 
