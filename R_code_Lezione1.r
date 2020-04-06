@@ -1,30 +1,37 @@
-#installiamo la nuova libreria tramite i pacchetti;
+#installiamo la nuova libreria tramite i pacchetti; se usiamo R invece di R-studio useremo il comando 
+install.packages("sp")
 library(sp) 
 
-#usiamo il comando data per vedere i dati
+#usiamo il comando data per chiamare i dati contenuti nella libreria;
 data("meuse")
 
-#vediamo la tabella meuse
+#vediamo la tabella dei dati meuse;
 meuse
 
-#vediamo solo le prime 6 righe della tabella
+#vediamo solo le prime 6 righe della tabella;
 head(meuse) #vediamo i primi 6
 
+#con questo comando andremo a vedere i nomi delle variabili contenute all'interno della tabella
 names(meuse)
 
+#il comando sotto citato ci andrà a visualizzare gli indici statistici più rilevanti prendendo in considerazione tutti i dati;
 summary(meuse)
 
-pairs(meuse) #com pairs si crea un grafico che mette in correlazioni le variabili
+#con pairs si crea un grafico che mette in correlazione le variabili dei dati;
+pairs(meuse)
 
+#il simbolo messo prima di cadmium ci fa mettere in correlazione solamente le variabili da noi specificate, impostando i dati uguali a meuse
 pairs(~cadmium+copper+lead,data=meuse)
-
 
 pairs(~cadmium+copper+lead+zinc,data = meuse)
 
+#essendo i dati interessati relativamente al 3,4,5 e 6 riga della colonna un metodo alternativo è questo;
 pairs(meuse[,3:6])
 
+#aggiungendo col="red", cambierà il colore di visualizzazioine del grafico;
 pairs(meuse[,3:6],col="red")
 
+#aggiungendo main, daremo il comando di impostare un titolo al grafico;
 pairs(meuse[,3:6],col="purple",pch=19,cex=3, main="Elementi presenti")
 
 pairs(~cadmium+copper+lead+zinc+elev,data = meuse) #volendo si può variare da [,3:7];
