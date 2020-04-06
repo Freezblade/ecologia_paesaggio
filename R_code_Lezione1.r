@@ -81,19 +81,22 @@ panel.histograms <- function(x, ...)
 
 pairs(~cadmium+copper+lead+zinc+elev,data = meuse) 
 
+#una volte inviate le tre funzioni esterne avremo la possibilità di creare dei grafici diversi ed esteticamente più belli;
 pairs(meuse[,3:6],lower.panel = panel.correlations,upper.panel = panel.smoothing,diag.panel = panel.histograms)
 
-
+#exercise: varia il pannello superiore ed inferiore invertendoli
 pairs(meuse[,3:6],lower.panel = panel.smoothing,upper.panel = panel.correlations,diag.panel = panel.histograms)
 
 library(sp)
 data("meuse")
 head(meuse)
 
-
+#creiamo un grafico prendendo le colonne di interesse usando il comando meuse$... ;
 plot(meuse$cadmium,meuse$copper, main="cadmio e rame correlati")
 
+#mettiamo in evidenza il nostro pacchetto di dati così da non dover scrivere ogni volta meuse;
 attach(meuse)
 
+#una volta messo in evidenza meuse possiamo evitare di scriverlo ogni volta così da andare a semplificare lo script. 
 plot(cadmium,copper, main="Cadmio e Rame",pch=24,col="purple",xlab="Cadmio",ylab="Rame",cex=2)
 
