@@ -1,5 +1,7 @@
 #TELERILEVAMENTO 
 
+#English version below
+
 #scarichiamo 2 librerie che ci serviranno per lavorare con i nostri dati
 
 install.packages("raster")
@@ -287,6 +289,298 @@ plot(dfdvilr,col=cldfdvi)
 dev.off()
 
 #é importante usare la scala giusta per evitare di non riuscire a distinguere le microdivresità presente nel grafico;
+
+
+#English
+
+#download 2 libraries that we will need to work with our data
+
+install.packages ( "raster")
+
+install.packages ( "RStoolbox")
+yes
+
+# let's call the first library we downloaded
+library (raster)
+
+#download a data packet and rename a particular file that we will need for our work
+p224r63_2011 <- brick ("p224r63_2011_masked.grd")
+
+# let's make a plot of our satellite image
+plot (p224r63_2011)
+
+# B1: blue
+# B2: green
+# B3: red
+# B4: near infrared (nir)
+# B5: infrared medium
+# B6: thermal infrared
+# B7: medium infrared
+
+#to change the color scale use this command:
+cl <- colorRampPalette (c ("black", "gray", "light gray")) (100)
+
+#having set these values ​​we put in our command col = "cl"
+plot (p224r63_2011, col = cl)
+
+#modify the cormatic scales to see what happens
+cllow <- colorRampPalette (c ("black", "gray", "light gray")) (5)
+
+# let's see what changes in our chart
+plot (p224r63_2011, col = cllow)
+
+names (p224r63_2011)
+# [1] "B1_sre" "B2_sre" "B3_sre" "B4_sre" "B5_sre" "B6_bt" "B7_sre"
+
+#change the blue band to blue scale
+clb <- colorRampPalette (c ("dark blue", "blue", "light blue")) (100)
+
+#attach data frame doesn't work with raster
+#to put only the blue band inside the plot
+plot (p224r63_2011 $ B1_sre, col = clb)
+
+# let's do the same for the other colors
+#green
+clg <- colorRampPalette (c ("dark green", "green", "light green")) (100)
+plot (p224r63_2011 $ B2_sre, col = colg)
+
+#exercise: do near infrared with the color scale from red to yellow
+clir <- colorRampPalette (c ("purple", "pink", "light pink")) (100)
+plot (p224r63_2011 $ B4_sre, col = clir)
+
+#plot with all 4 multiframe bands
+par (mfrow = c (2,2))
+
+#blue
+clb <- colorRampPalette (c ("dark blue", "blue", "light blue")) (100)
+plot (p224r63_2011 $ B1_sre, col = clb)
+
+#green
+clg <- colorRampPalette (c ("dark green", "green", "light green")) (100)
+plot (p224r63_2011 $ B2_sre, col = clg)
+
+#red
+clr <- colorRampPalette (c ("red", "orange", "yellow")) (100)
+plot (p224r63_2011 $ B3_sre, col = clr)
+
+#infrared
+clir <- colorRampPalette (c ("purple", "pink", "light pink")) (100)
+plot (p224r63_2011 $ B4_sre, col = clir)
+
+#with dev.off () we close the plotted images
+
+#natural colors, 3 components R G B, we create a plot with this color range
+# 3 bands at a time R = red G = green B = blue
+#the function we will use will be:
+
+plotRGB (p224r63_2011, r = 3, g = 2, b = 1)
+
+#being the result black, we use the stretch = "lin" function
+
+plotRGB (p224r63_2011, r = 3, g = 2, b = 1, stretch = "lin")
+
+#to better visualize our resulting graph we change the bands by inserting the infrared
+
+plotRGB (p224r63_2011, r = 4, g = 3, b = 2, stretch = "lin")
+
+# the plants being reflective will be in red, the light blue indicates the non-cultivated agricultural areas, the pink areas are cultivated agricultural areas
+
+# let's see the 2 graphs obtained using the multiframe function
+par (mfrow = c (2,1))
+
+plotRGB (p224r63_2011, r = 3, g = 2, b = 1, stretch = "lin")
+plotRGB (p224r63_2011, r = 4, g = 3, b = 2, stretch = "lin")
+
+
+#to save it in pdf
+pdf ( "Remote Sensing-1.pdf")
+plotRGB (p224r63_2011, r = 4, g = 3, b = 2, stretch = "lin")
+dev.off ()
+
+par (mfrow = c (2,1))
+
+plotRGB (p224r63_2011, r = 3, g = 2, b = 1, stretch = "lin")
+plotRGB (p224r63_2011, r = 4, g = 3, b = 2, stretch = "lin")
+dev.off ()
+
+# exercise: we install infrared in other green components
+plotRGB (p224r63_2011, r = 3, g = 4, b = 2, stretch = "lin")
+
+#infrared in the blue component:
+plotRGB (p224r63_2011, r = 3, g = 2, b = 4, stretch = "lin")
+
+# PT.2
+
+#to be able to use the remote sensing functions, you must use the raster library;
+library (raster)
+
+#set the working directory
+setwd ( "~ / Desktop / lab")
+
+#this time we will use another image for our remote sensing
+#NB. we put in the directory a dataset that we will use during all our work on R
+#apply the brick function to be able to rename and bring to R our image of interest
+
+p224r63_1988 <- brick ("p224r63_1988_masked.grd")
+
+#we create a plot of the 1988 object
+#the 1988 lensat satellite we see the blue, red, green, and infrared bands.
+# B1: blue
+# B2: green
+# B3: red
+# B4: near infrared (nir)
+# B5: infrared medium
+# B6: thermal infrared
+# B7: medium infrared
+
+plot (p224r63_1988)
+
+#to see the names of interest
+names (p224r63_1988)
+
+#to see our graphs all together we use the multiframe
+par (mfrow = c (2,2))
+
+#blue
+clb <- colorRampPalette (c ("dark blue", "blue", "light blue")) (100)
+plot (p224r63_1988 $ B1_sre, col = clb)
+
+#green
+clg <- colorRampPalette (c ("dark green", "green", "light green")) (100)
+plot (p224r63_1988 $ B2_sre, col = clg)
+
+#red
+clr <- colorRampPalette (c ("red", "orange", "yellow")) (100)
+plot (p224r63_1988 $ B3_sre, col = clr)
+
+#infrared
+clir <- colorRampPalette (c ("purple", "pink", "light pink")) (100)
+plot (p224r63_1988 $ B4_sre, col = clir)
+
+#to close the current window we will use:
+
+dev.off ()
+
+# create an RGB plot in True colors or natural
+
+plotRGB (p224r63_1988, r = 3, g = 2, b = 1, stretch = "Lin")
+
+#being the graph not understandable we will use the chromatic scale
+
+plotRGB (p224r63_1988, r = 3, g = 2, b = 1, stretch = "Lin")
+
+#exercise: we create the plot with the infrared component in the red component;
+#in this case the colors are called False colors;
+
+plotRGB (p224r63_1988, r = 4, g = 3, b = 2, stretch = "Lin")
+
+# let's see how our image has changed over time by comparing 2011 with 1988;
+
+par (mfrow = c (2,1))
+plotRGB (p224r63_2011, r = 4, g = 3, b = 2, stretch = "Lin")
+plotRGB (p224r63_1988, r = 4, g = 3, b = 2, stretch = "Lin")
+
+dev.off ()
+# agriculture is much more developed in 2011
+#infrared are the plants
+# clods of earth are white or light blue
+
+#we can calculate the health index of the vegetation, remember that it is possible because healthy leaves can reflect infrared
+#DVI (Difference Vegetation Index) will be the index that we will use;
+
+# DVI = NIR-RED, we will have different results based on the health of the plants;
+#sana = high NIR
+#Malata = RED high
+
+# = Div1988 nir1988-red1988
+# the $ symbol is used to tie
+
+dvi1988 <- p224r63_1988 $ B4_sre-p224r63_1988 $ B3_sre
+
+# let's see the DVI plot
+plot (dvi1988)
+
+#we do the same for 2011
+
+dvi2011 <- p224r63_2011 $ B4_sre-p224r63_2011 $ B3_sre
+plot (dvi2011)
+
+par (mfrow = c (2,1))
+ # To change color we will use the color ramp palette command
+cldvi11 <- colorRampPalette (c ('dark green', 'green', 'light green')) (100)
+plot (dvi2011, col = cldvi11)
+
+# now we have the DVI of the 2 years, if we make the difference between the 2 years we will see how much the change in vegetation has been, if the 2011 value is negative it means that the vegetation was better in 1988
+#multitemporal analysis
+dfdvi <- dvi2011-dvi1988
+
+
+# we create the image that shows us the areas where the plants have been in greatest stress
+plot (dfdvi)
+cldfdvi <- colorRampPalette (c ('red', 'white', 'blue')) (100)
+plot (dfdvi, col = cldfdvi)
+
+#view all graphs together using an image multiframe of 1988. 2011 and index difference
+par (mfrow = c (3,1))
+
+plotRGB (p224r63_2011, r = 4, g = 3, b = 2, stretch = "Lin")
+plotRGB (p224r63_1988, r = 4, g = 3, b = 2, stretch = "Lin")
+plot (dfdvi, col = cldfdvi)
+
+dev.off ()
+
+#change the resolution of an image, the function used is aggregate
+p224r63_2011lr <- aggregate (p224r63_2011, fact = 10)
+# if fact or factor is set equal to 10 we use a scale 10 times greater
+
+# let's see the characteristics of the original image
+p224r63_2011
+
+# let's see the characteristics of the new image
+p224r63_2011lr
+
+# let's compare the 2 graphs;
+par (mfrow = c (2,1))
+plotRGB (p224r63_2011, r = 4, g = 3, b = 2, stretch = "Lin")
+plotRGB (p224r63_2011lr, r = 4, g = 3, b = 2, stretch = "Lin")
+dev.off ()
+
+#change the factor to 50
+p224r63_2011lr2 <- aggregate (p224r63_2011, fact = 50)
+#view the image information
+p224r63_2011lr2
+
+#create our graph by always correlating them;
+par (mfrow = c (2,1))
+plotRGB (p224r63_2011, r = 4, g = 3, b = 2, stretch = "Lin")
+plotRGB (p224r63_2011lr2, r = 4, g = 3, b = 2, stretch = "Lin")
+dev.off ()
+
+# let's make a dvi of the new image 2011
+dvi2011lr50 <- p224r63_2011lr2 $ B4_sre - p224r63_2011lr2 $ B3_sre
+plot (dvi2011lr50)
+
+#decrease the 1988 resolution
+p224r63_1988lr2 <- aggregate (p224r63_1988, fact = 50)
+
+# let's make a dvi of the new image 1988
+dvi1988lr50 <- p224r63_1988lr2 $ B4_sre - p224r63_1988lr2 $ B3_sre
+plot (dvi1988lr50)
+
+# let's make the difference of the DVI of the two years at low resolution
+dfdvilr <- dvi2011lr50-dvi1988lr50
+
+#create our image:
+plot (dfdvilr, col = cldfdvi)
+
+
+#multiframe of the total
+par (mfrow = c (2,1))
+plot (dfdvi, col = cldfdvi)
+plot (dfdvilr, col = cldfdvi)
+dev.off ()
+
+# it is important to use the right scale to avoid not being able to distinguish the micro-diversity present in the graph;
 
 
 
