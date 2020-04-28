@@ -107,3 +107,77 @@ cl2 <- colorRampPalette(c("pink","purple","light pink"))
 plot(dt,col=cl2)
 
 points(tesip)
+
+#PARTE 2
+
+setwd("~/Desktop/lab")
+
+#riprendiamo i comandi sulla tesi che abbiamo svolto la volta precedente, o se si è salvato il file aprire quello e settare nuovamente la WD
+load("sanmarino.RData")
+
+#dt <- mappa di densità
+#Tesi <- dataset
+#Tesippp <- point pattern
+
+#richiamiamo la libraria spatstat
+library(spatstat)
+
+plot(dt)
+points(tesip)
+
+#densità relazionata ai prati aridi 
+
+head(Tesi)
+
+#marks associa i valori della variabile al point pattern;
+
+marks(tesip) <- Species_richness
+
+#funzione smooth, per una interpolazione stimiamo i valori dove non sono stati misurati; crea una mappa continua metendo dei valori dove non misurati;
+
+
+sp <- Smooth(tesip)
+
+plot(sp,col=cl2)
+points(tesip)
+
+#aggiungiamo i confini del territorio di san marino
+
+library(rgdal)
+Smarino <- readOGR("San_Marino.shp")
+plot(Smarino)
+plot(Smarino,add=T)
+plot(sp,add=T,col=cl2)
+points(tesip)
+
+#exercise:multiframe di densità ed interpolazione
+
+par(mfrow=c(2,1))
+
+plot(dt,main="Densità")
+points(tesip)
+
+
+plot(sp,col=cl2,main="interpolazione")
+points(tesip)
+
+#exercise: 1 colonna 2 righe nel multiframe
+
+par(mfrow=c(1,2))
+
+plot(dt,main="Densità")
+points(tesip)
+
+
+plot(sp,col=cl2,main="interpolazione")
+points(tesip)
+
+
+
+
+
+
+
+
+
+
