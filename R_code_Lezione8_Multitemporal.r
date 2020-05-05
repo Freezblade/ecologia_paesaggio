@@ -116,3 +116,36 @@ before <- c(9.8,90.2)
 after <- c(47.95,52.04)
 output <- data.frame(cover,before,after)
 View(output)
+
+#pt 2 
+
+setwd("~/Desktop/lab")
+
+#richiamiamo il file salvato:
+load("Analisi_multitemporale.R")
+
+#visualizziamo Output
+output
+
+#creiamo un grafico, usiamo ggplot2
+library(ggplot2)
+
+#sulla y abbiamo la percentuale prima 
+p1 <- ggplot(output, aes(x=cover,y=before,color=cover))+geom_bar(stat = "identity",fill="white")
+plot(p1)
+
+
+#exercise: plot % afret deforestation
+#sulla y abbiamo la percentuale dopo
+p2 <- ggplot(output, aes(x=cover,y=after,color=cover))+geom_bar(stat = "identity",fill="white")
+plot(p2)
+
+install.packages("gridExtra")
+#par con ggplot non funziona quindi si usa questa libreria per riuscire a mettere in multiframe i 2 grafici;
+
+#richiamiamo la libreria 
+library(gridExtra)
+
+#grid arrange va a prendere vari plot e li mette insieme all'interno di uno stesso grafico 
+grid.arrange(p1,p2,nrow=1)
+
