@@ -122,3 +122,16 @@ listafinale <- lapply(rlist, raster)
 EN <- stack(listafinale)
 
 plot(EN, col=cl1)
+
+#facciamo la differenza tra la prima immagine e la tredicesima 
+
+difEN <- EN$EN_0013 - EN$EN_0001
+
+cl2 <- colorRampPalette(c('blue','white','red'))(100)
+
+plot(difEN,col=cl2)
+
+#facciamo un boxplot orizzontale
+
+boxplot(EN, horizontal=T,outline=F,axes=T)
+
