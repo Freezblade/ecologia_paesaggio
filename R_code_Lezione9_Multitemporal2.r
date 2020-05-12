@@ -109,6 +109,11 @@ grid.arrange(grafico1, grafico2, nrow = 1)
 
 #per caricare tutti i dati con una stessa estensione si deve fare 
 setwd("~/Desktop/lab/esa_no2")
+
+#abbiamo bisogno della libreria raster
+library(raster)
+
+#carichiamo i file di tipo .png
 rlist <- list.files(pattern = ".png")
 
 #con la funzione lapply ci fa caricare i dati 
