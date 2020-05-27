@@ -1117,24 +1117,40 @@ setwd("~/Desktop/lab/snow")
 
 library(raster)
 
-#carichiamo i file di tipo .tif
-rlist <- list.files(pattern = ".tif")
+setwd("~/lab/snow")
+# setwd("/Users/utente/lab/snow") #mac
+# setwd("C:/lab/snow") # windows
 
-#con la funzione lapply ci fa caricare i dati 
-listafinale <- lapply(rlist,raster)
+# snow2000r <- raster("snow2000r.tif")
 
-snow.multitemp <- stack(listafinale)
+# lapply() example with NO2 data
 
-plot(SN, col=cl1)
+# rlist=list.files(pattern=".png", full.names=T)
+
+##save raster into list
+##con lappy
+# list_rast=lapply(rlist, raster)
+# EN <- stack(list_rast)
+# plot(EN)
+
+rlist <- list.files(pattern="snow20")
+rlist 
+
+#save raster into list
+#con lappy
+list_rast <- lapply(rlist, raster)
+snow.multitemp <- stack(list_rast)
+plot(snow.multitemp,col=cl)
+
 
 par(mfrow=c(1,2))
-plot(SN$snow2000r,col=cl1)
-plot(SN$snow2020r,col=cl1)
+plot(snow.multitemp$snow2000r,col=cl1)
+plot(snow.multitemp$snow2020r,col=cl1)
 
 dev.off() 
 #facciamo una previsione del 2025
 
-difsnow = SN$snow2020r - SN$snow2000r
+difsnow = snow.multitemp$snow2020r - snow.multitemp$snow2000r
 cldiff <- colorRampPalette(c('blue','white','red'))(100) 
 plot(difsnow, col=cldiff)
 
