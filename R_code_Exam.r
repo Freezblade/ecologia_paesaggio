@@ -1,11 +1,11 @@
 #R_code_Exam.r
 
 ###1 R code Lezione 1
+
 #installiamo la nuova libreria tramite i pacchetti; se usiamo R invece di R-studio useremo il comando 
 
-#English version below
-
 install.packages("sp")
+#usiamo il comando Library per chiamare una libreria dati;
 library(sp) 
 
 #usiamo il comando data per chiamare i dati contenuti nella libreria;
@@ -17,7 +17,7 @@ meuse
 #vediamo solo le prime 6 righe della tabella;
 head(meuse) #vediamo i primi 6
 
-#con questo comando andremo a vedere i nomi delle variabili contenute all'interno della tabella
+#con questo comando andremo a vedere i nomi delle variabili contenute all'interno della tabella;
 names(meuse)
 
 #il comando sotto citato ci andrà a visualizzare gli indici statistici più rilevanti prendendo in considerazione tutti i dati;
