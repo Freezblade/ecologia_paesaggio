@@ -1118,20 +1118,19 @@ setwd("~/Desktop/lab/snow")
 library(raster)
 
 setwd("~/lab/snow")
-# setwd("/Users/utente/lab/snow") #mac
-# setwd("C:/lab/snow") # windows
 
-# snow2000r <- raster("snow2000r.tif")
 
-# lapply() example with NO2 data
+snow2000r <- raster("snow2000r.tif")
 
-# rlist=list.files(pattern=".png", full.names=T)
+#lapply() esempio con i dati NO2
+
+rlist=list.files(pattern=".png", full.names=T)
 
 ##save raster into list
 ##con lappy
-# list_rast=lapply(rlist, raster)
-# EN <- stack(list_rast)
-# plot(EN)
+list_rast=lapply(rlist, raster)
+EN <- stack(list_rast)
+plot(EN)
 
 rlist <- list.files(pattern="snow20")
 rlist 
