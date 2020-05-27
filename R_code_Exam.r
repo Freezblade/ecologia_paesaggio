@@ -2,42 +2,46 @@
 
 ###1 R code Lezione 1
 
-#installiamo la nuova libreria tramite i pacchetti; se usiamo R invece di R-studio useremo il comando 
+#installiamo la nuova libreria tramite i pacchetti; se usiamo R invece di R-studio useremo il comando    PF
 
 install.packages("sp")
-#usiamo il comando Library per chiamare una libreria dati;
+
+#usiamo il comando Library per chiamare una libreria dati; Sp fornisce le classi e metodi per i dati spaziali;  PF
 library(sp) 
 
-#usiamo il comando data per chiamare i dati contenuti nella libreria;
+#usiamo il comando data per chiamare i dati contenuti nella libreria; il dataset meuse fornisce dati sulla concentrazione di metalli    PF
+#pesanti nel terreno insieme a una serie di variabili del suolo e del paesaggio nei punti di osservazione   PF
+
 data("meuse")
 
-#vediamo la tabella dei dati meuse;
+#scrivendo solo il nostro oggetto vediamo la tabella dei dati;    PF
 meuse
 
-#vediamo solo le prime 6 righe della tabella;
-head(meuse) #vediamo i primi 6
+#usando il comando head vediamo solo le prime 6 righe della tabella;   PF
+head(meuse) 
 
-#con questo comando andremo a vedere i nomi delle variabili contenute all'interno della tabella;
+#con names() andremo a vedere i nomi delle variabili contenute all'interno della tabella;    PF
 names(meuse)
 
-#il comando sotto citato ci andrà a visualizzare gli indici statistici più rilevanti prendendo in considerazione tutti i dati;
+#il comando sotto citato ci andrà a visualizzare gli indici statistici più rilevanti prendendo in considerazione tutti i dati;   PF
 summary(meuse)
 
-#con pairs si crea un grafico che mette in correlazione le variabili dei dati;
+#con pairs si crea un grafico che mette in correlazione le variabili dei dati;  PF 
 pairs(meuse)
 
-#il simbolo messo prima di cadmium ci fa mettere in correlazione solamente le variabili da noi specificate, impostando i dati uguali a meuse
+#il simbolo messo prima di cadmium ci fa mettere in correlazione solamente le variabili da noi specificate,    PF 
+#impostando i dati uguali a meuse   PF
 pairs(~cadmium+copper+lead,data=meuse)
 
 pairs(~cadmium+copper+lead+zinc,data = meuse)
 
-#essendo i dati interessati relativamente al 3,4,5 e 6 riga della colonna un metodo alternativo è questo;
+#essendo i dati interessati relativamente al 3,4,5 e 6 riga della colonna un metodo alternativo è questo;    PF
 pairs(meuse[,3:6])
 
-#aggiungendo col="red", cambierà il colore di visualizzazioine del grafico;
+#aggiungendo col="red", cambierà il colore di visualizzazioine del grafico;    PF
 pairs(meuse[,3:6],col="red")
 
-#aggiungendo main, daremo il comando di impostare un titolo al grafico;
+#aggiungendo main, daremo il comando di impostare un titolo al grafico;       PF
 pairs(meuse[,3:6],col="purple",pch=19,cex=3, main="Elementi presenti")
 
 pairs(~cadmium+copper+lead+zinc+elev,data = meuse) #volendo si può variare da [,3:7];
@@ -87,7 +91,7 @@ panel.histograms <- function(x, ...)
 
 pairs(~cadmium+copper+lead+zinc+elev,data = meuse) 
 
-#una volte inviate le tre funzioni esterne avremo la possibilità di creare dei grafici diversi ed esteticamente più belli;
+#una volte inviate le tre funzioni esterne avremo la possibilità di creare dei grafici diversi ed esteticamente più belli;     PF
 pairs(meuse[,3:6],lower.panel = panel.correlations,upper.panel = panel.smoothing,diag.panel = panel.histograms)
 
 #exercise: varia il pannello superiore ed inferiore invertendoli
@@ -97,13 +101,13 @@ library(sp)
 data("meuse")
 head(meuse)
 
-#creiamo un grafico prendendo le colonne di interesse usando il comando meuse$... ;
+#creiamo un grafico prendendo le colonne di interesse usando il comando meuse$... ;     PF
 plot(meuse$cadmium,meuse$copper, main="cadmio e rame correlati")
 
-#mettiamo in evidenza il nostro pacchetto di dati così da non dover scrivere ogni volta meuse;
+#mettiamo in evidenza il nostro pacchetto di dati così da non dover scrivere ogni volta meuse;      PF
 attach(meuse)
 
-#una volta messo in evidenza meuse possiamo evitare di scriverlo ogni volta così da andare a semplificare lo script. 
+#una volta messo in evidenza meuse possiamo evitare di scriverlo ogni volta così da andare a semplificare lo script.     PF
 plot(cadmium,copper, main="Cadmio e Rame",pch=24,col="purple",xlab="Cadmio",ylab="Rame",cex=2)
 
 
@@ -111,81 +115,81 @@ plot(cadmium,copper, main="Cadmio e Rame",pch=24,col="purple",xlab="Cadmio",ylab
 
 ###R code spatial
 
-#chiamiamo il pacchetto sp
+#chiamiamo il pacchetto sp      PF
 library(sp)
 
-#usiamo il comando data per aprire il nostro dataframe
+#usiamo il comando data per aprire il nostro dataframe      PF
 data(meuse)
 
-#con head vediamo i primi 6 
+#con head vediamo i primi 6     PF
 head(meuse)
 
-#usiamo attach per fissare il dataframe
+#usiamo attach per fissare il dataframe    PF
 attach(meuse)
 
-#facciamo un plot per mettere in correlazione cadmio e piombo
+#facciamo un plot per mettere in correlazione cadmio e piombo     PF
 plot(cadmium,lead,main="Relazione cadmio e piombo",col="red",pch=18,xlab="Cadmio",ylab="Piombo")
 
-#ecercise: creare un plot con rame e zinco
+#ecercise: creare un plot con rame e zinco  
 plot(copper,zinc,main="Relazione tra Rame e Zinco",col="green",pch=17,xlab="Rame",ylab="Zinco")
 
-#per mostrare i grafici assieme usiamo : multiframe o multipanel
+#per mostrare i grafici assieme usiamo : multiframe o multipanel PF
 par(mfrow=c(1,2))
 plot(cadmium,lead,main="Relazione cadmio e piombo",col="red",pch=18,xlab="Cadmio",ylab="Piombo")
 plot(copper,zinc,main="Relazione tra Rame e Zinco",col="green",pch=17,xlab="Rame",ylab="Zinco")
-#se cambiamo i valori di mfrow in 2,1 avremo una variazione nella visualizzazione del grafico
+#se cambiamo i valori di mfrow in 2,1 avremo una variazione nella visualizzazione del grafico   PF
 
-#installiamo tramite packages, install, GGally o esternamente con install.packages("GGally"), una volta installata chiamiamo la libreria
+#installiamo tramite packages, install, GGally o esternamente con install.packages("GGally"), una volta installata chiamiamo la libreria   PF
 library(GGally)
 
-#ggpairs(meuse) fa il grafico con tutte le variabili, usiamo ggpairs(meuse[,3:6]) per prendere solo le variabili di interesse
+#ggpairs(meuse) fa il grafico con tutte le variabili, usiamo ggpairs(meuse[,3:6]) per prendere solo le variabili di interesse   PF
 ggpairs(meuse[,3:6])
 
 #SPATIAL
-#spieghiamo ad R che nei dati sono presenti coordinate
+#spieghiamo ad R che nei dati sono presenti coordinate PF
 coordinates(meuse)=~x+y
 
 #vediamo il grafico con:
 plot(meuse)
 
-#per creare il grafico di tipo spaziale si usa questa funzione:
+#per creare il grafico di tipo spaziale si usa questa funzione: PF
 spplot(meuse,"zinc")
-# il plot che è uscito è di tipo spaziale i punti gialli ci vanno ad indicare le zone più inquinate, 
-# stiamo analizzando le zone vicine ad un fiume.
+# il plot che è uscito è di tipo spaziale i punti gialli ci vanno ad indicare le zone più inquinate, PF
+# stiamo analizzando le zone vicine ad un fiume.  PF 
 
 ######################################################################################################################################
 
 ###Rcode spatial 2
 
-#Richiamiamo la libreria sp, se non è stata installata usare install.packages("sp");
+#Richiamiamo la libreria sp, se non è stata installata usare install.packages("sp");    PF
 library(sp)
 
-#Carichiamo i nostri dati con il comando:
+#Carichiamo i nostri dati con il comando:    PF
 data(meuse)
 
-#fissiamo il dataframe con il comando:
+#fissiamo il dataframe con il comando:   PF
 attach(meuse)
 
-#mostriamo le prime 6 righe della tabella con il comando:
+#mostriamo le prime 6 righe della tabella con il comando:    PF
 head(meuse)
-#in alternativa si può usare il comando names(meuse)
+#in alternativa si può usare il comando names(meuse)   PF
 
-#andiamo a specificare la presenza di coordinate
+#andiamo a specificare la presenza di coordinate    PF
 coordinates(meuse)=~x+y
 
-#creiamo un sp plot prendendo in considerazione lo zinco 
+#creiamo un sp plot (metodi di tracciato reticolare o traliccio per dati spaziali con attributi) prendendo in considerazione lo zinco     PF
 spplot(meuse,"zinc")
 
 #exercise: creare un sp-plot del rame
 spplot(meuse,"copper")
 
-#la funzione bubble varia il grafico
+#la funzione bubble varia il grafico, crea un grafico a bolle di dati spaziali
 bubble(meuse,"zinc")
 
 #exercise: cambiamo il colore del grafico e lo facciamo mettendo in evidenza il Rame 
 bubble(meuse,"copper",col = "orange",main = "Indice spaziale Rame")
 
-#creiamo un nuovo oggetto con dei dati inventati
+#creiamo un nuovo oggetto con dei dati inventati, diamo un nome al nostro nuovo oggetto con ≤–    PF
 
 foram <- c(10,20,35,55,67,80)
 carbon <- c(5, 15, 30, 70, 85, 99)
@@ -194,9 +198,9 @@ carbon <- c(5, 15, 30, 70, 85, 99)
 plot(carbon,foram,col="purple",cex=2,pch=17)
 
 #scarichiamo un nuovo pacchetto dati, e lo installiamo seguendo il percorso file, import dataset, from text(base), e scegliamo il file di interesse se usiamo Rstudio
-#su R si usa questo comando se siamo utenti mac
+#su R si usa questo comando se siamo utenti mac  PF
 setwd("/Users/Name/Desktop/nome cartella")
-#siccome la prima riga non è di dati ma di testo si usa questo comando: ATTENZIONE se si usa R studio questo passaggio lo fa in automatico
+#siccome la prima riga non è di dati ma di testo si usa questo comando: ATTENZIONE se si usa R studio questo passaggio lo fa in automatico   PF
 covid <- read.table("covid_agg.csv",header = T)
 
 
@@ -204,8 +208,8 @@ covid <- read.table("covid_agg.csv",header = T)
 
 ###Rcode pointpattern
 
-#impostiamo una working directory
-setwd("/Users/Pierluigi/ecologia del paesaggio")
+#impostiamo una working directory, impostando una cartella con i nostri dati di interesse all'interno 
+setwd("~/Desktop/lab")
 
 #semplifichiamo il nome
 covid <- covid_agg
@@ -219,17 +223,17 @@ head(covid)
 #creiamo un plot per iniziare a vedere la disposizione
 plot(covid$country,covid$cases)
 
-#con las vediamo i lables, 
-#con las=0 rimangono parallele
-#con las=1 cambia le etichette in orizzontale 
-#con las =2 le lables sono perpendicolari all'asse 
-#con las=3 le lables sono tutte verticali
+#con las vediamo i lables, PF
+#con las=0 rimangono parallele  PF
+#con las=1 cambia le etichette in orizzontale   PF
+#con las =2 le lables sono perpendicolari all'asse    PF
+#con las=3 le lables sono tutte verticali    PF
 plot(covid$country,covid$cases,las=0)
 plot(covid$country,covid$cases,las=1)
 plot(covid$country,covid$cases,las=2)
 plot(covid$country,covid$cases,las=3)
 
-#installiamo e poi chiamiamo la libreria ggplot2 
+#installiamo e poi chiamiamo la libreria ggplot2 un sistema per la creazione 'dichiarativa' della grafica      PF
 library(ggplot2)
 
 #chiamiamo i dati nella libreria
@@ -238,14 +242,16 @@ data(mpg)
 #mostriamo le prime sei righe della tabella
 head(mpg)
 
-#creiamo un plot del nuovo dataset mgp, modifichiamo l'estetica e aggiungiamo una geometria
+#creiamo un plot del nuovo dataset mgp, modifichiamo l'estetica e aggiungiamo una geometria    PF
 ggplot(mpg,aes(x=displ,y=hwy))+geom_point()
 
-#scarichiamo e installiamo la nuova libreria spatstat
+#scarichiamo e installiamo la nuova libreria spatstat per l'analisi dei modelli di punti spaziali.    PF
+#Supporta dati di covariate spaziali come immagini di pixel   PF
 library(spatstat)
 attach(covid)
 
-#tramite la funzione ppp ci creiamo un nuovo dataset che ci interesserà per l'analis spaziale
+#tramite la funzione ppp ci creiamo un nuovo dataset che ci interesserà per l'analis spaziale,  PF
+#Crea un oggetto della classe "ppp" che rappresenta un set di dati del modello punto nel piano bidimensionale.  PF
 covids <- ppp(lon,lat,c(-180,180),c(-90,90))
 
 #semplifichiamo la densità chiamandola d
@@ -257,10 +263,10 @@ plot(d)
 #aggiungiamo i punti al plot
 points(covids)
 
-#salviamo il file in .Rdata
-#richiamiamo la nostra WD e successivamente carichiamo il salvataggio che abbiamo effettuato precedentemente
+#salviamo il file in .Rdata  PF
+#richiamiamo la nostra WD e successivamente carichiamo il salvataggio che abbiamo effettuato precedentemente   PF
 
-#cambiamo i colori, palette, numero di livelli si specifica con una parentesi esterna, per usare questa funzione usiamo la libreria spatstat
+#cambiamo i colori, palette, numero di livelli si specifica con una parentesi esterna, per usare questa funzione usiamo la libreria spatstat   PF
 cl <- colorRampPalette(c("yellow","orange","red"))(100)
 plot(d,col=cl)
 
@@ -268,7 +274,8 @@ plot(d,col=cl)
 cl2 <- colorRampPalette(c("green","turquoise","blue"))(100)
 plot(d,col=cl2)
 
-#per completare la mappa aggiungiamo i bordi dei vari paesi; usiamo la libreria rgdal, scarichiamo un nuovo pacchetto di dati delle coste in vettore
+#per completare la mappa aggiungiamo i bordi dei vari paesi; usiamo la libreria rgdal, scarichiamo un nuovo pacchetto di dati delle coste in vettore  PF
+#rgdal fornisce collegamenti alla libreria di astrazione dei dati "geospaziale"  PF
 library(rgdal)
 coastlines <- readOGR("ne_10m_coastline.shp")
 
@@ -280,19 +287,19 @@ plot(coastlines, add=T)
 
 #TELERILEVAMENTO 
 
-#English version below
-
 #scarichiamo 2 librerie che ci serviranno per lavorare con i nostri dati
+#raster: serve per leggere, scrivere, manipolare, analizzare e modellare dati spaziali su griglia.  PF
 
 install.packages("raster")
 
+#RStoolbox: casella degli strumenti per l'elaborazione e l'analisi delle immagini di telerilevamento  PF
 install.packages("RStoolbox")
 yes
 
 #chiamiamo la prima libreria che abbiamo scaricato
 library(raster)
 
-#scarichiamo un pacchetto di dati e rinominiamo un file in particolare che ci servirà per il nostro lavoro
+#scarichiamo un pacchetto di dati e rinominiamo un file in particolare che ci servirà per il nostro lavoro  PF
 p224r63_2011 <- brick("p224r63_2011_masked.grd")
 
 #facciamo un plot della nostra immagine satellitare
@@ -306,7 +313,7 @@ plot(p224r63_2011)
 # B6: thermal infrared
 # B7: medium infrared
 
-#per cambiare la scala cromatica si usa questo comando:
+#cambiamo la scala cromatica:
 cl <- colorRampPalette(c("black","grey","light grey"))(100) 
 
 #avendo impostato questi valori mettiamo nel nostro comando col="cl"
@@ -356,32 +363,32 @@ plot(p224r63_2011$B3_sre,col=clr)
 clir <- colorRampPalette(c("purple","pink","light pink"))(100)
 plot(p224r63_2011$B4_sre,col=clir)
 
-#con dev.off() chiudiamo le immagini plottate
+#con dev.off() chiudiamo le immagini plottate   PF
 
-#colori naturali, 3 componenti R G B, creiamo un plot con questa gamma di colore 
-# 3 bande alla volta R= red G= green B= blue
-#la funzione che useremo sarà:
+#colori naturali, 3 componenti R G B, creiamo un plot con questa gamma di colore    PF
+# 3 bande alla volta R= red G= green B= blue   PF
+#la funzione che useremo sarà:  PF
 
 plotRGB(p224r63_2011,r=3,g=2,b=1)
 
-#essendo il risultato nero, usiamo la funzione stretch="lin"
+#essendo il risultato nero, usiamo la funzione stretch="lin"   PF
 
 plotRGB(p224r63_2011,r=3,g=2,b=1, stretch="lin")
 
-#per visualizzare meglio il nostro grafico risultante cambiamo le bande inserendo l'infrarosso 
+#per visualizzare meglio il nostro grafico risultante cambiamo le bande inserendo l'infrarosso  PF
 
 plotRGB(p224r63_2011,r=4,g=3,b=2, stretch="lin")
 
-#le piante essendo riflettenti saranno in rosso, il celeste indica le zone agricola non coltivata, le zona rosa sono zone agricole coltivate
+#le piante essendo riflettenti saranno in rosso, il celeste indica le zone agricola non coltivata, le zona rosa sono zone agricole coltivate  PF
 
-#vediamo i 2 grafici ottenuti usando la funzione multiframe
+#vediamo i 2 grafici ottenuti usando la funzione multiframe che permette la visualizzazione di più grafici nella stessa finestra  PF
 par(mfrow=c(2,1))
 
 plotRGB(p224r63_2011,r=3,g=2,b=1, stretch="lin")
 plotRGB(p224r63_2011,r=4,g=3,b=2, stretch="lin")
 
 
-#per salvarlo in pdf
+#per salvarlo in pdf   PF
 pdf("telerilevamento-1.pdf")
 plotRGB(p224r63_2011,r=4,g=3,b=2, stretch="lin")
 dev.off()
@@ -395,32 +402,32 @@ dev.off()
 # exercise: infrarosso lo montiamo in alre componenti green
 plotRGB(p224r63_2011,r=3,g=4,b=2, stretch="lin")
 
-#infrarosso nella componente blu:
+#infrarosso nella componente blu:  
 plotRGB(p224r63_2011,r=3,g=2,b=4, stretch="lin")
 
 #PT.2
 
-#per riuscire ad usare le funzioni di telerilevamnento bisogna usare la libreria raster;
+#per riuscire ad usare le funzioni di telerilevamnento bisogna usare la libreria raster; PF
 library(raster)
 
-#settiamo la working directory
+#settiamo la working directory 
 setwd("~/Desktop/lab")
 
-#questa volta useremo un altra immagine per il nostro telerilevamento
-#NB. abbiamo messo nella directory un set di dati che andremo ad usare durante tutto il nostro lavoro su R
-#applichiamo la funzione brick per riuscire a rinominare e portare in R la nostra immagine di interesse
+#questa volta useremo un altra immagine per il nostro telerilevamento PF
+#NB. abbiamo messo nella directory un set di dati che andremo ad usare durante tutto il nostro lavoro su R  PF
+#applichiamo la funzione brick per riuscire a rinominare e portare in R la nostra immagine di interesse  PF
 
 p224r63_1988 <- brick("p224r63_1988_masked.grd")
 
 #ci creiamo un plot dell'oggetto del 1988
-#il satellite lensat del 1988 vediamo le bande del blu, rosso, verde, e infrarosso.
-# B1: blue
-# B2: green
-# B3: red
-# B4: near infrared (nir)
-# B5: medium infrared
-# B6: thermal infrared
-# B7: medium infrared
+#il satellite lensat del 1988 vediamo le bande del blu, rosso, verde, e infrarosso.  PF 
+# B1: blue  PF
+# B2: green  PF
+# B3: red PF
+# B4: near infrared (nir)  PF
+# B5: medium infrared   PF
+# B6: thermal infrared  PF
+# B7: medium infrared  PF
 
 plot(p224r63_1988)
 
@@ -450,36 +457,36 @@ plot(p224r63_1988$B4_sre,col=clir)
 
 dev.off()
 
-#creiamo un plot RGB in True colours o natural
+#creiamo un plot RGB in True colours o natural  PF
 
 plotRGB(p224r63_1988,r=3,g=2,b=1,stretch="Lin")
 
-#essendo il grafico non comprensibile useremo la scala cromatica 
+#essendo il grafico non comprensibile useremo la scala cromatica   PF
 
 plotRGB(p224r63_1988,r=3,g=2,b=1,stretch="Lin")
 
-#exercise: creiamo il plot con la componente infrarosso nella componente rossa;
-#in questo caso i colori vengono definiti False colours;
+#exercise: creiamo il plot con la componente infrarosso nella componente rossa;   PF
+#in questo caso i colori vengono definiti False colours;   PF
 
 plotRGB(p224r63_1988,r=4,g=3,b=2,stretch="Lin")
 
-#vediamo come è cambiata nel corso del tempo la nostra immagine mettendo a confronto il 2011 con il 1988;
+#vediamo come è cambiata nel corso del tempo la nostra immagine mettendo a confronto il 2011 con il 1988; PF
 
 par(mfrow=c(2,1))
 plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
 plotRGB(p224r63_1988,r=4,g=3,b=2,stretch="Lin")
 
 dev.off()
-#l'agricolo è molto più sviluppata nel 2011
-#infrarosso vicino sono le piante
-#le zolle di terra sono bianche o celeste
+#l'agricolo è molto più sviluppata nel 2011  PF
+#infrarosso vicino sono le piante  PF
+#le zolle di terra sono bianche o celeste  PF
 
-#possiamo calcolare l'indice di salute della vegetazione, ricordiamo che è possibile in quanto le foglie sane riescono a riflettere l'infrarosso 
-#DVI(Difference Vegetation Index) sarà l'indice che useremo noi; 
+#possiamo calcolare l'indice di salute della vegetazione, ricordiamo che è possibile in quanto le foglie sane riescono a riflettere l'infrarosso PF
+#DVI(Difference Vegetation Index) sarà l'indice che useremo noi; PF
 
-#DVI=NIR-RED, avremo dei risultati diversi in base alla salute delle piante; 
-#sana = NIR alto
-#Malata = RED alto 
+#DVI=NIR-RED, avremo dei risultati diversi in base alla salute delle piante; PF
+#sana = NIR alto PF
+#Malata = RED alto PF
 
 #div1988=nir1988-red1988
 #per legare si usa il simbolo $
@@ -489,27 +496,28 @@ dvi1988 <- p224r63_1988$B4_sre-p224r63_1988$B3_sre
 #vediamo il plot del DVI
 plot(dvi1988)
 
-#facciamo lo stesso per quello del 2011
+#facciamo lo stesso per quello del 2011 
 
 dvi2011 <- p224r63_2011$B4_sre-p224r63_2011$B3_sre
 plot(dvi2011)
 
 par(mfrow=c(2,1))
- #Per cambiare colore si userà il comando color ramp palette
+ #Per cambiare colore si userà il comando color ramp palette PF
 cldvi11 <- colorRampPalette(c('dark green','green','light green'))(100)
 plot(dvi2011,col=cldvi11)
 
-#adesso abbiamo i DVI dei 2 anni, se facciamo la differenza tra i 2 anni vedremo quanto è stato il cambiamento della vegetazione, se il valore del 2011 è negativo vuol dire che la vegetazione stava meglio nel 1988
-#multitemporal analysis
+#adesso abbiamo i DVI dei 2 anni, se facciamo la differenza tra i 2 anni vedremo quanto è stato il cambiamento della vegetazione, PF
+#se il valore del 2011 è negativo vuol dire che la vegetazione stava meglio nel 1988 PF
+#multitemporal analysis PF
 dfdvi <- dvi2011-dvi1988
 
 
-# creiamo l' immagine che ci mostra le zone dove le piante sono state in maggiore stress
+# creiamo l' immagine che ci mostra le zone dove le piante sono state in maggiore stress PF
 plot(dfdvi)
 cldfdvi <- colorRampPalette(c('red','white','blue'))(100)
 plot(dfdvi,col=cldfdvi)
 
-#visualizzare tutti i grafici assieme usando un multiframe di immagine di 1988. 2011 e differenza di indice 
+#visualizzare tutti i grafici assieme usando un multiframe di immagine di 1988,2011 e differenza di indice PF
 par(mfrow=c(3,1))
 
 plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
@@ -518,9 +526,9 @@ plot(dfdvi,col=cldfdvi)
 
 dev.off()
 
-#cambiare la risoluzione di un immagine, la funione che si usa è aggregate
-p224r63_2011lr <- aggregate(p224r63_2011,fact=10)
-# se fact o factor viene settato uguale a 10 usiamo una scala 10 volte maggiore 
+#cambiare la risoluzione di un immagine, la funione che si usa è aggregate PF
+p224r63_2011lr <- aggregate(p224r63_2011,fact=10) 
+# se fact o factor viene settato uguale a 10 usiamo una scala 10 volte maggiore PF
 
 #vediamo le caratteriestiche dell'immagine originale
 p224r63_2011
@@ -534,32 +542,32 @@ plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
 plotRGB(p224r63_2011lr,r=4,g=3,b=2,stretch="Lin")
 dev.off()
 
-#cambiamo il fattore in 50
+#cambiamo il fattore in 50 
 p224r63_2011lr2 <- aggregate(p224r63_2011,fact=50)
 #visualizziamo le informazioni dell'immagine
 p224r63_2011lr2
 
-#creiamo il nostro grafico mettendoli sempre in correlazione;
+#creiamo il nostro grafico mettendoli sempre in correlazione; PF
 par(mfrow=c(2,1))
 plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
 plotRGB(p224r63_2011lr2,r=4,g=3,b=2,stretch="Lin")
 dev.off()
 
-#facciamo un dvi della nuova immagine 2011
+#facciamo un dvi della nuova immagine 2011 PF
 dvi2011lr50 <- p224r63_2011lr2$B4_sre - p224r63_2011lr2$B3_sre
 plot(dvi2011lr50)
 
-#diminuiamo la risoluzione del 1988
+#diminuiamo la risoluzione del 1988 PF
 p224r63_1988lr2 <- aggregate(p224r63_1988,fact=50)
 
-#facciamo un dvi della nuava immagine 1988
+#facciamo un dvi della nuava immagine 1988 PF
 dvi1988lr50 <- p224r63_1988lr2$B4_sre - p224r63_1988lr2$B3_sre
 plot(dvi1988lr50)
 
-#facciamo la differenza dei DVI dei due anni a bassa risoluzione
+#facciamo la differenza dei DVI dei due anni a bassa risoluzione PF
 dfdvilr <- dvi2011lr50-dvi1988lr50
 
-#creiamo la nostra immagine:
+#creiamo la nostra immagine: 
 plot(dfdvilr,col=cldfdvi)
 
 #multiframe del totale 
@@ -568,37 +576,37 @@ plot(dfdvi,col=cldfdvi)
 plot(dfdvilr,col=cldfdvi)
 dev.off()
 
-#é importante usare la scala giusta per evitare di non riuscire a distinguere le microdivresità presente nel grafico;
+#é importante usare la scala giusta per evitare di non riuscire a distinguere le microdivresità presente nel grafico; PF 
 
 ######################################################################################################################################
 
 #Landcover
 
-#settiamo la nostra directory
+#settiamo la nostra directory  PF
 setwd("~/Desktop/lab")
 
-#richiamiamo la libreria raster
+#richiamiamo la libreria raster PF
 library(raster)
 
-#recuperiamo le immagini che sono di nostro interesse contenute nella nostra working directory
+#recuperiamo le immagini che sono di nostro interesse contenute nella nostra working directory PF
 p224r63_2011 <- brick("p224r63_2011_masked.grd")
 
-#chiamiamo la libreria RStoolbox
+#chiamiamo la libreria RStoolbox PF
 library(RStoolbox)
 
 plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
 
-#unsuperClass, l'mmagine di partenza e numero di classi 
+#unsuperClass, l'mmagine di partenza e numero di classi,clustering supervisionato di dati Raster * utilizzando il clustering kmeans  PF
 
 p224r63_2011c <- unsuperClass(p224r63_2011,nClasses = 4)
 
-#visualizziamo ciò che abbiamo svolto, informazione sull'immagine; si unisce la mappa al modello 
+#visualizziamo ciò che abbiamo svolto, informazione sull'immagine; si unisce la mappa al modello  PF
 p224r63_2011c
 
-#plottiamo la nostra mappa, i colori interi ci mostrano le nostre 4 classi;
+#plottiamo la nostra mappa, i colori interi ci mostrano le nostre 4 classi;  PF
 plot(p224r63_2011c$map)
 
-#cambiamo i colori del nostro grafico così da avere una migliore interpretazione del grafico
+#cambiamo i colori del nostro grafico così da avere una migliore interpretazione del grafico  PF
 
 clclass <- colorRampPalette(c('green',"red","blue","black"))(100)
 
@@ -609,8 +617,8 @@ plot(p224r63_2011c$map,col=clclass)
 #INTERPOLATION
 
 
-#exercise: usiamo il vecchio sript sul covid e andiamo a plottare la mappa di densità;
-#carichiamo il vecchio script "Lezione spatial"
+#exercise: usiamo il vecchio sript sul covid e andiamo a plottare la mappa di densità; PF
+#carichiamo il vecchio script "Lezione spatial" PF
 setwd("~/Desktop/lab")
 load("Lezione spatial.R")
 ls()
@@ -633,13 +641,13 @@ plot(coastlines,add=T)
 ###interpolazione
 
 covid
-#creiamo dei valori per interpolazione in base ad etichette per ogni paese
+#creiamo dei valori per interpolazione in base ad etichette per ogni paese 
 
-#usiamo il point pattern di ppp, e associamo alla colonna cases del dataset covid
-#se fai attach non si deve scrivere covid$cases ma solo cases
+#usiamo il point pattern di ppp, e associamo alla colonna cases del dataset covid PF
+#se fai attach non si deve scrivere covid$cases ma solo cases PF
 marks(covids) <- cases
 
-#creiamo la mappa con la funzione smooth
+#creiamo la mappa con la funzione smooth funzione generica per eseguire il livellamento spaziale dei dati spaziali. PF
 s <- Smooth(covids)
 
 # Exercise: plot(s) with points and coastlines
@@ -653,11 +661,11 @@ library(rgdal)
 coastlines <- readOGR("ne_10m_coastline.shp")
 plot(coastlines,add=T)
 
-#stima non della densità di punti ma di casi nel mondo;
+#stima non della densità di punti ma di casi nel mondo; PF
 
 dev.off()
 
-#mappa finale, unico fragico con entrambi i plot
+#mappa finale, unico fragico con entrambi i plot PF
 
 par(mfrow=c(2,1))
 
@@ -688,22 +696,22 @@ plot(coastlines,add=T)
 
 dev.off()
 
-#carichiamo un nuovo set di dati messi nella nostra cartella lab;
+#carichiamo un nuovo set di dati messi nella nostra cartella lab; PF
 
 load("Tesi(1).RData")
 ls()
-#per fissare i nostri dati 
+#per fissare i nostri dati PF
 attach(Tesi)
 
-#visualizziamo le prime 6 righe della tabella
+#visualizziamo le prime 6 righe della tabella PF
 head(Tesi)
 
-#richiamiamo la libraria spatstat
+#richiamiamo la libraria spatstat PF
 library(spatstat)
 
-#facciamo il nostro point pattern
+#facciamo il nostro point pattern PF
 
-#per vedere il sommario dei nostri dati 
+#per vedere il sommario dei nostri dati PF
 summary(Tesi)
 
 tesip <- ppp(Longitude,Latitude,c(12.41,12.47),c(43.90,43.95))
@@ -720,28 +728,30 @@ points(tesip)
 
 setwd("~/Desktop/lab")
 
-#riprendiamo i comandi sulla tesi che abbiamo svolto la volta precedente, o se si è salvato il file aprire quello e settare nuovamente la WD
+#riprendiamo i comandi sulla tesi che abbiamo svolto la volta precedente, PF
+#o se si è salvato il file aprire quello e settare nuovamente la WD PF
 load("sanmarino.RData")
 
 #dt <- mappa di densità
 #Tesi <- dataset
 #Tesippp <- point pattern
 
-#richiamiamo la libraria spatstat
+#richiamiamo la libraria spatstat PF
 library(spatstat)
 
 plot(dt)
 points(tesip)
 
-#densità relazionata ai prati aridi 
+#densità relazionata ai prati aridi PF
 
 head(Tesi)
 
-#marks associa i valori della variabile al point pattern;
+#marks associa i valori della variabile al point pattern; PF
 
 marks(tesip) <- Species_richness
 
-#funzione smooth, per una interpolazione stimiamo i valori dove non sono stati misurati; crea una mappa continua metendo dei valori dove non misurati;
+#funzione smooth, per una interpolazione stimiamo i valori dove non sono stati misurati; PF
+#crea una mappa continua metendo dei valori dove non misurati; PF
 
 
 sp <- Smooth(tesip)
@@ -749,7 +759,7 @@ sp <- Smooth(tesip)
 plot(sp,col=cl2)
 points(tesip)
 
-#aggiungiamo i confini del territorio di san marino
+#aggiungiamo i confini del territorio di san marino 
 
 library(rgdal)
 Smarino <- readOGR("San_Marino.shp")
@@ -769,7 +779,7 @@ points(tesip)
 plot(sp,col=cl2,main="interpolazione")
 points(tesip)
 
-#exercise: 1 colonna 2 righe nel multiframe
+#exercise: 1 colonna 2 righe nel multiframe 
 
 par(mfrow=c(1,2))
 
@@ -787,15 +797,15 @@ points(tesip)
 
 setwd("~/Desktop/lab")
 
-#chiamiamo la libreria raster
+#chiamiamo la libreria raster PF
 library(raster)
 
-#con questa funzione faremo leggere le immagini al programma;
+#con questa funzione faremo leggere le immagini al programma; PF
 defor1<- brick("defor1.jpg")
 
 defor2 <- brick("defor2.jpg")
 
-#vediamo le caratteristiche del nostro file
+#vediamo le caratteristiche del nostro file PF
 defor1
 
 #names: defor1.1, defor1.2, defor1.3 
@@ -806,7 +816,7 @@ defor1
 #creiamo un plot RGB
 plotRGB(defor1,r=1,g=2,b=3,stretch="Lin")
 
-#vediamo la copertura della foresta pluviale
+#vediamo la copertura della foresta pluviale PF
 
 defor2
 
@@ -819,9 +829,9 @@ defor2
 #creiamo un plot RGB
 plotRGB(defor2,r=1,g=2,b=3,stretch="Lin")
 
-#vediamo nella seconda immagine l'antropizzazione della zona analizzata
+#vediamo nella seconda immagine l'antropizzazione della zona analizzata PF
 
-#facciamo un multiframe per vedere le 2 immagini a confronto
+#facciamo un multiframe per vedere le 2 immagini a confronto PF
 
 par(mfrow=c(2,1))
 
@@ -829,8 +839,8 @@ plotRGB(defor1,r=1,g=2,b=3,stretch="Lin")
 
 plotRGB(defor2,r=1,g=2,b=3,stretch="Lin")
 
-#classifichiamo l'immagine per riuscire a distinguere le classi, classificazione non supervisionata non diciamo cosa è cosa;
-#per la classificazione abbiamo bisogno della libreria RStoolbox
+#classifichiamo l'immagine per riuscire a distinguere le classi, classificazione non supervisionata non diciamo cosa è cosa; PF
+#per la classificazione abbiamo bisogno della libreria RStoolbox PF
 library(RStoolbox)
 
 d1c <- unsuperClass(defor1,nClasses = 2)
@@ -839,16 +849,16 @@ plot(d1c$map)
  cl1 <- colorRampPalette(c("dark green","pink"))(100)
  plot(d1c$map,col=cl1)
 
- #classificazione della seconda immagine
+ #classificazione della seconda immagine PF
  
 d2c <- unsuperClass(defor2,nClasses = 2)
 cl2 <- colorRampPalette(c("pink","dark green"))(100)
 plot(d2c$map,col=cl2)
 
-#dark green <- Foresta
-#pink <-zona antropizzata
+#dark green <- Foresta (PF)
+#pink <-zona antropizzata PF
 
-#mettiamoli a confronto con multiframe;
+#mettiamoli a confronto con multiframe; PF
 
 par(mfrow=c(2,1))
 
@@ -857,7 +867,7 @@ plot(d2c$map,col=cl2)
 
 dev.off()
 
-#frequenza delle 2 mappe, 
+#frequenza delle 2 mappe    PF
 
 freq(d1c$map)
 
@@ -875,7 +885,7 @@ freq(d2c$map)
 
 totd2 <- 164353+178373
 
-#percentuale di foresta = frequanza prima mappa per 100 diviso il totale
+#percentuale di foresta = frequenza prima mappa per 100 diviso il totale     PF
 
 percent1 <- freq(d1c$map)*100/totd1
 
@@ -914,7 +924,7 @@ output
 #creiamo un grafico, usiamo ggplot2
 library(ggplot2)
 
-#sulla y abbiamo la percentuale prima 
+#sulla y abbiamo la percentuale prima (PF)
 p1 <- ggplot(output, aes(x=cover,y=before,color=cover))+geom_bar(stat = "identity",fill="white")
 plot(p1)
 
@@ -925,17 +935,17 @@ p2 <- ggplot(output, aes(x=cover,y=after,color=cover))+geom_bar(stat = "identity
 plot(p2)
 
 install.packages("gridExtra")
-#par con ggplot non funziona quindi si usa questa libreria per riuscire a mettere in multiframe i 2 grafici;
+#par con ggplot non funziona quindi si usa questa libreria per riuscire a mettere in multiframe i 2 grafici; PF
 
 #richiamiamo la libreria 
 library(gridExtra)
 
-#grid arrange va a prendere vari plot e li mette insieme all'interno di uno stesso grafico 
+#grid arrange va a prendere vari plot e li mette insieme all'interno di uno stesso grafico  PF
 grid.arrange(p1,p2,nrow=1)
 
 ####################################################################################################################################
 
-#nuva analisi multitemporale, analizziamo le eemissioni di ossidi di azoto fra gennaio e marzo 2020
+#nuva analisi multitemporale, analizziamo le emissioni di ossidi di azoto fra gennaio e marzo 2020
 
 setwd("~/Desktop/lab")
 
@@ -943,7 +953,7 @@ setwd("~/Desktop/lab")
 #libreria raster 
 library(raster)
 
-#carichiamo le nostre immagini in forato .png
+#carichiamo le nostre immagini in forato .png (PF)
 EN01 <- raster("EN_0001.png")
 
 #visualizziamo con plot 
@@ -976,7 +986,7 @@ plot(EN01,col=cl1)
 plot(EN13,col=cl1)
 
 dev.off()
-#si nota come la quantità di monossido di azoto sia diminuita nell'arco del tempo.
+#si nota come la quantità di monossido di azoto sia diminuita nell'arco del tempo. PF
 
 
 #differenza EN13-EN01
@@ -987,7 +997,7 @@ difno2 <- EN13-EN01
 
 plot(difno2,col=cl2)
 
-#plottiamo tutte le immagini assieme
+#plottiamo tutte le immagini assieme 
 par(mfrow=c(4,4))
 
 p1<-plot(EN01,col=cl1)
@@ -1008,7 +1018,7 @@ dev.off()
 
 #pt 2 
 
-#adiamo a sistemare il grafico in maniera che sia a scala uguale 
+#adiamo a sistemare il grafico in maniera che sia a scala uguale PF
 library(ggplot2)
 
 cover <- c("Agriculture","Forest")
@@ -1019,6 +1029,9 @@ after <- c(48.2,51.8)
 
 output <- data.frame(cover,before,after)
 output
+#gridextra: Fornisce una serie di funzioni a livello di utente per lavorare con la grafica "griglia", PF
+#in particolare per organizzare più grafici basati su griglia su una pagina e disegnare tabelle. PF
+
 
 library(gridExtra) 
 # oppure: require(Extra)
@@ -1041,26 +1054,26 @@ grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) +
   ylim(0, 100)
 
 
-# Exercise: use grid.arrange to plot the two graphs, impostiamo la stessa scala
+# Exercise: use grid.arrange to plot the two graphs, impostiamo la stessa scala PF
 grid.arrange(grafico1, grafico2, nrow = 1)
 
-#per caricare tutti i dati con una stessa estensione si deve fare 
+#per caricare tutti i dati con una stessa estensione si deve fare PF
 setwd("~/Desktop/lab/esa_no2")
 
-#abbiamo bisogno della libreria raster
+#abbiamo bisogno della libreria raster (PF)
 library(raster)
 
-#carichiamo i file di tipo .png
+#carichiamo i file di tipo .png (PF)
 rlist <- list.files(pattern = ".png")
 
-#con la funzione lapply ci fa caricare i dati 
+#con la funzione lapply ci fa caricare i dati  PF
 listafinale <- lapply(rlist, raster)
 
 EN <- stack(listafinale)
 
 plot(EN, col=cl1)
 
-#facciamo la differenza tra la prima immagine e la tredicesima 
+#facciamo la differenza tra la prima immagine e la tredicesima PF
 
 difEN <- EN$EN_0013 - EN$EN_0001
 
@@ -1068,7 +1081,7 @@ cl2 <- colorRampPalette(c('blue','white','red'))(100)
 
 plot(difEN,col=cl2)
 
-#facciamo un boxplot orizzontale
+#facciamo un boxplot orizzontale, box-and-whisker plot dei dati assegnati PF
 
 boxplot(EN, horizontal=T,outline=F,axes=T)
 
@@ -1079,11 +1092,15 @@ boxplot(EN, horizontal=T,outline=F,axes=T)
 #settiamo la directory
 setwd("~/Desktop/lab")
 
-#i pacchetti necessari all'analisi di oggi sono questi due, se non si hanno installati usare il comando install.packages("")
+#i pacchetti necessari all'analisi di oggi sono questi due, se non si hanno installati usare il comando install.packages("") PF
+#ncdf4 fornisce un'interfaccia R di alto livello ai file di dati scritti utilizzando la libreria netCDF di Unidata (versione 4 o precedente), PF
+#che sono file di dati binari che sono portatili su più piattaforme e includono informazioni sui metadati oltre ai set di dati. PF
+
 library(ncdf4)
+
 library(raster)
 
-#Dal sito copernicus scarichiamo le immagini che ci interessano per la nostra analisi: una volta scaricate andiamo a caricarle su R 
+#Dal sito copernicus scarichiamo le immagini che ci interessano per la nostra analisi: una volta scaricate andiamo a caricarle su R   PF
 
 snowmay<- raster("c_gls_SCE500_202005180000_CEURO_MODIS_V1.0.1.nc")
 
@@ -1093,8 +1110,8 @@ cl1 <- colorRampPalette(c("dark blue", "blue","light blue"))(100)
 
 plot(snowmay,col=cl1)
 
-#importiamo i fati sulla neve, creiamo una nuova cartella nella directory nella quale inseriamo i le immagini di interesse e successivamente creiamo un ciclo
-#per riuscire a caricarle in blocco
+#importiamo i fati sulla neve, creiamo una nuova cartella nella directory nella quale inseriamo i le immagini di interesse e successivamente PF
+#creiamo un ciclo per riuscire a caricarle in blocco    PF
 
 setwd("~/Desktop/lab/snow")
 
@@ -1148,7 +1165,8 @@ cl1 <- colorRampPalette(c("black","green"))(100)
 dev.off()
 
 
-#con reclassify andiamo a riclassificare l'immagine raster riassegnando valori 
+#con reclassify andiamo a riclassificare l'immagine raster riassegnando valori, PF
+#Riclassificare i valori di un oggetto Raster. La funzione riclassifica i gruppi di valori in altri valori.    PF
 
 d1c.for <- reclassify(d1c,cbind(1,NA))
 
@@ -1203,6 +1221,8 @@ ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity",
 #8. R_code_multitemp_NO2.r   
 #9. R_code_snow.r   
 #10. R_code_patches.r  
+
+
 
 #dati copernicus Website 
 https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
