@@ -1,5 +1,24 @@
 #R_code_Exam.r
 
+#1. R_code_first.r   
+#2. R_code_spatial.r   
+#3. R_code_spatial2.r
+#4. R_code_point_pattern   
+#5. R_code_teleril.r   
+#6. R_code_landcover.r   
+#7. R_code_multitemp.r   
+#8. R_code_multitemp_NO2.r   
+#9. R_code_snow.r   
+#10. R_code_patches.r  
+#11. R_code_crop.r
+
+
+
+#dati copernicus Website 
+https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
+
+
+
 ###1 R code Lezione 1
 
 #installiamo la nuova libreria tramite i pacchetti; se usiamo R invece di R-studio useremo il comando    PF
@@ -1226,25 +1245,51 @@ attach(output)
 library(ggplot2)
 ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity", fill="white")
 
-#1. R_code_first.r   
-#2. R_code_spatial.r   
-#3. R_code_spatial2.r
-#4. R_code_point_pattern   
-#5. R_code_teleril.r   
-#6. R_code_landcover.r   
-#7. R_code_multitemp.r   
-#8. R_code_multitemp_NO2.r   
-#9. R_code_snow.r   
-#10. R_code_patches.r  
 
+#############################################################################################################################
 
+#11. Crop
 
-#dati copernicus Website 
-https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
+setwd("~/Desktop/lab")
+setwd("~/Desktop/lab/snow")
 
+#abbiamo bisogno della libreria raster  PF
+library(raster)
 
+#carichiamo i file di tipo .png   PF
+rlist <- list.files(pattern = "snow")
 
+#con la funzione lapply ci fa caricare i dati  PF
+listafinale <- lapply(rlist, raster)
 
+EN <- stack(listafinale)
+clb <- colorRampPalette(c('dark blue','blue','light blue'))(100)
+plot(EN,col=clb)
+
+#funzione zoom su una mappa si va a zommare su un'area precisa della mappa   PF
+
+plot(EN$snow2010r,col=clb)
+
+#modifichiamp l'estensione della nostra mappa   PF
+ext <- c(6,18,30,50)
+
+#con zoom si fa un'ingrandimento della mappa   PF
+zoom(EN$snow2010r,ext)
+
+#non definendo l'estensione, usando drawextent si va a definire un rettangolo  che andrà a definire la zona di immagine interessata   PF
+zoom(EN$snow2010r, ext=drawExtent())
+
+#il crop taglia la zona di interesse   PF
+
+snow2010.crop<- crop(EN$snow2010r,ext)
+
+plot(snow2010.crop,col=clb)
+
+#applichiamo il crop a tuti i livelli  PF
+
+stacksnow<- crop(EN,ext)
+
+plot(stacksnow,col=clb)
 
 
 
