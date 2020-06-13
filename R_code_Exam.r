@@ -11,7 +11,7 @@
 #9. R_code_snow.r   
 #10. R_code_patches.r  
 #11. R_code_crop.r
-
+#12. R_code_Species_Distribution_Modelling
 
 
 #dati copernicus Website 
@@ -1290,6 +1290,78 @@ plot(snow2010.crop,col=clb)
 stacksnow<- crop(EN,ext)
 
 plot(stacksnow,col=clb)
+
+#########################################################################################################################
+
+ ### R code Species Distribution Modelling
+
+# install.packages("sdm")
+# install.packages("rgdal")
+library(sdm)
+library(raster)
+library(rgdal)
+
+# species
+file <- system.file("external/species.shp", package="sdm") 
+species <- shapefile(file)
+
+species
+species$Occurrence
+plot(species)
+
+plot(species[species$Occurrence == 1,],col='blue',pch=16)
+
+points(species[species$Occurrence == 0,],col='red',pch=16)
+
+# diamo un nome, il file che necessitiamo è esterno di conseguenza andiamo a usare system.file: Questa funzione ha lo scopo di intercettare PF
+#le chiamate a system.file, in modo che si comporti bene con i pacchetti caricati da devtools. PF
+#È reso disponibile quando un pacchetto viene caricato con load_all.  PF
+
+
+path <- system.file("external", package="sdm") 
+
+lst <- list.files(path=path,pattern='asc$',full.names = T) #
+lst
+
+#andiamo a caricare tutti i dti in una volta  PF
+preds <- stack(lst)
+
+#creiamo una palette di colori per una migliore interpretazione del grafico;   PF
+cl <- colorRampPalette(c('blue','orange','red','yellow')) (100)
+plot(preds, col=cl)
+
+#creiamo un grafico e con points andiamo aggiungere i punti di maggiore interesse del grafico che ci mostra le variabili di interesse PF
+plot(preds$elevation, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+plot(preds$temperature, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+plot(preds$precipitation, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+plot(preds$vegetation, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+
+
+# model
+#sdmData : Crea oggetti sdmdata che contengono specie (singole o multiple) e variate esplicative. PF
+#Inoltre, è possibile includere ulteriori informazioni come coordinate spaziali, tempo, variabili PF
+#di raggruppamento e metadati (ad esempio autore, data, riferimento, ecc.). PF
+
+d <- sdmData(train=species, predictors=preds)
+d
+
+#sdm: Un framework estensibile per lo sviluppo di modelli di distribuzione delle specie utilizzando approcci   PF
+#individuali e basati sulla comunità, generare gruppi di modelli, valutare i modelli e prevedere le potenziali   PF
+#distribuzioni delle specie nello spazio e nel tempo.  PF
+
+m1 <- sdm(Occurrence ~ elevation + precipitation + temperature + vegetation, data=d, methods='glm') 
+p1 <- predict(m1, newdata=preds)
+
+plot(p1, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
 
 
 
