@@ -1364,5 +1364,197 @@ plot(p1, col=cl)
 points(species[species$Occurrence == 1,], pch=16)
 
 
+########################################################################################################################
+
+# R_code_Progetto_Esame
+
+#settiamo la directory
+
+library(ncdf4)
+library(raster)
+
+setwd("~/Desktop/ecopae_esame")
+
+heet2020 <- raster("c_gls_LST10-DC_202005110000_GLOBE_GEO_V1.2.1(1).nc")
+heet2019 <- raster("c_gls_LST10-DC_201905110000_GLOBE_GEO_V1.2.1.nc")
+heet2018 <- raster("c_gls_LST10-DC_201805110000_GLOBE_GEO_V1.2.1.nc")
+heet2017 <- raster("c_gls_LST10-DC_201705110000_GLOBE_GEO_V1.2.1.nc")
+
+#vediamo cosa è contenuto all'interno delle nostre immagini
+heet2020
+heet2019
+heet2018
+heet2017
+
+#creiamo una palette di colori per far capire l'innalzamento della temperatura
+cl1 <- colorRampPalette(c("blue","pink","red"))(100)
+
+#uniamo tutti i grafici assieme 
+par(mfrow=c(2,2))
+plot(heet2017,col=cl1,main="Anno 2017")
+plot(heet2018,col=cl1,main = "Anno 2018")
+plot(heet2019,col=cl1,main = "Anno2019")
+plot(heet2020,col=cl1,main = "Anno 2020")
+
+#creiamo una palette di colori per far capire l'innalzamento della temperatura
+cl1 <- colorRampPalette(c("blue","pink","red"))(100)
+
+dev.off()
+
+#analisi multitemporale
+
+#classifichiamo le nostre immagini
+library(RStoolbox)
+
+cl2 <- colorRampPalette(c("pink","red"))(100)
+
+h2017 <- unsuperClass(heet2017,nClasses = 2)
+plot(h2017$map,col=cl2,main = "Anno 2017")
+h2020 <- unsuperClass(heet2020,nClasses = 2)
+plot(h2020$map,col=cl2,main = "Anno 2020")
+
+par(mfrow=c(1,2))
+plot(h2017$map,col=cl2,main = "Anno 2017")
+plot(h2020$map,col=cl2,main = "Anno 2020")
+
+#frequenza delle 2 mappe 
+
+freq(h2017$map)
+
+#value  count
+#[1,]     1 2746192
+#[2,]     2 1935455
+
+tot2017 <- 2746192+1935455
+
+freq(h2020$map)
+
+#value  count
+#[1,]     1 2234580
+#[2,]     2 2386297
+
+tot2020 <- 2386297+2234580
+
+
+#percentuali
+
+percent2017 <- freq(h2017$map)*100/tot2017
+
+percent2020 <- freq(h2020$map)*100/tot2020
+
+cover <- c("cold","heet")
+
+before <- c(2746192,2234580)
+after <- c(1935455,2386297)
+output <- data.frame(cover,before,after)
+View(output)
+
+library(ggplot2)
+p1 <- ggplot(output, aes(x=cover,y=before,color=cover))+geom_bar(stat = "identity",fill="white")+ylim(0,60000)
+plot(p1)
+p2 <- ggplot(output, aes(x=cover,y=after,color=cover))+geom_bar(stat = "identity",fill="white")
+plot(p2)
+
+library(gridExtra)
+
+grid.arrange(p1,p2,nrow=1)
+
+#mettendo a confronto le immagini del 2017 con quelle del 2020 abbiamo un aumento
+#della LST mondiale al giorno 11-05-2020 rispetto al 11-05-2017. 
+
+
+#Focus su italia
+
+#creiamo una nuova cartella e inseriamo i dati di interesse, una volta fatto andiamo ad impostare una nuova WD
+
+setwd("~/Desktop/ecopae_esame/heet")
+
+#carichiamo i file di tipo .nc (PF)
+
+rlist <- list.files(pattern = ".nc")
+
+#con la funzione lapply ci fa caricare i dati  PF
+listafinale <- lapply(rlist, raster)
+
+heet <- stack(listafinale)
+
+plot(heet, col=cl1)
+heet
+
+ext <- c(6,20,30,50)
+
+zoom(heet$Fraction.of.Valid.Observations.1,ext)
+zoom(heet$Fraction.of.Valid.Observations.2,ext)
+zoom(heet$Fraction.of.Valid.Observations.3,ext)
+zoom(heet$Fraction.of.Valid.Observations.4,ext)
+
+heet17it<- crop(heet$Fraction.of.Valid.Observations.1,ext)
+heet18it <- crop(heet$Fraction.of.Valid.Observations.2,ext)
+heet19it <- crop(heet$Fraction.of.Valid.Observations.3,ext)
+heet20it <- crop(heet$Fraction.of.Valid.Observations.4,ext)
+
+par(mfrow=c(2,2))
+plot(heet17it,col=cl1,main = "2017")
+plot(heet18it,col=cl1,main ="2018")
+plot(heet19it,col=cl1,main = "2019")
+plot(heet20it,col=cl1,main = "2020")
+
+dev.off()
+
+
+h2017itm <- unsuperClass(heet17it,nClasses = 2)
+h2020itm <- unsuperClass(heet20it,nClasses = 2)
+
+colit <- colorRampPalette(c("orange","red"))(100)
+
+par(mfrow=c(1,2))
+plot(h2017itm$map,col=colit,main = "11-05-2017")
+plot(h2020itm$map,col=colit,main = "11-05-2020")
+
+
+#frequenza delle 2 mappe 
+
+freq(h2017itm$map)
+
+#value  count
+#[1,]     1 33005 min
+#[2,]     2 45725 max
+
+tot2017itm <- 33005+45725
+
+freq((h2020itm$map))
+
+#value  count
+#[1,]     1 56744
+#[2,]     2 20626
+
+tot2020itm <- 56744+20626
+
+
+#percentuali
+
+percent2017itm <- freq(h2017itm$map)*100/tot2017itm
+
+percent2020itm <- freq(h2020itm$map)*100/tot2020itm
+
+cover <- c("cold","heet")
+
+before <- c(33005,56744)
+after <- c(45725,20626)
+outputitm <- data.frame(cover,before,after)
+View(outputitm)
+
+library(ggplot2)
+p1 <- ggplot(outputitm, aes(x=cover,y=before,color=cover))+geom_bar(stat = "identity",fill="white")
+plot(p1)
+p2 <- ggplot(outputitm, aes(x=cover,y=after,color=cover))+geom_bar(stat = "identity",fill="white")
+plot(p2)
+
+library(gridExtra)
+
+grid.arrange(p1,p2,nrow=1)
+
+#si nota che nel 11-05-2017 si ha una temperatura nettamente maggiore riispetto all'anno 2020
+
 
 
