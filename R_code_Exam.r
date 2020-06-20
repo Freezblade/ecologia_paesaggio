@@ -1371,18 +1371,21 @@ points(species[species$Occurrence == 1,], pch=16)
 # R_code_Progetto_Esame
 
 #settiamo la directory
-
+#inseriamo le librerie necessarie alla nostra analisi
 library(ncdf4)
 library(raster)
 
 setwd("~/Desktop/ecopae_esame")
+
+#carichiamo le immagini ad una ad una usando raster
 
 heet2020 <- raster("c_gls_LST10-DC_202005110000_GLOBE_GEO_V1.2.1(1).nc")
 heet2019 <- raster("c_gls_LST10-DC_201905110000_GLOBE_GEO_V1.2.1.nc")
 heet2018 <- raster("c_gls_LST10-DC_201805110000_GLOBE_GEO_V1.2.1.nc")
 heet2017 <- raster("c_gls_LST10-DC_201705110000_GLOBE_GEO_V1.2.1.nc")
 
-#vediamo cosa è contenuto all'interno delle nostre immagini
+#visualizziamo i dati all'interno dell'immagine, attenzione è necessario leggere le informazioni riportate sul sito 
+#Copernicus per una corretta analisi 
 heet2020
 heet2019
 heet2018
@@ -1391,7 +1394,6 @@ heet2017
 #creiamo una palette di colori per far capire l'innalzamento della temperatura
 cl1 <- colorRampPalette(c("blue","pink","red"))(100)
 
-#uniamo tutti i grafici assieme 
 par(mfrow=c(2,2))
 plot(heet2017,col=cl1,main="Anno 2017")
 plot(heet2018,col=cl1,main = "Anno 2018")
@@ -1415,50 +1417,57 @@ plot(h2017$map,col=cl2,main = "Anno 2017")
 h2020 <- unsuperClass(heet2020,nClasses = 2)
 plot(h2020$map,col=cl2,main = "Anno 2020")
 
+
 par(mfrow=c(1,2))
 plot(h2017$map,col=cl2,main = "Anno 2017")
 plot(h2020$map,col=cl2,main = "Anno 2020")
+
+h2017
+h2020
 
 #frequenza delle 2 mappe 
 
 freq(h2017$map)
 
 #value  count
-#[1,]     1 2746192
-#[2,]     2 1935455
+#[1,]     1 2746192 min
+#[2,]     2 1935455 max
 
 tot2017 <- 2746192+1935455
 
 freq(h2020$map)
 
 #value  count
-#[1,]     1 2234580
-#[2,]     2 2386297
+#[1,]     1 2234580 max
+#[2,]     2 2386297 min
 
 tot2020 <- 2386297+2234580
-
 
 #percentuali
 
 percent2017 <- freq(h2017$map)*100/tot2017
+percent2017
+#freddo <- 58.6
+#caldo <- 41.3
 
 percent2020 <- freq(h2020$map)*100/tot2020
+percent2020
+#freddo <- 51.6
+#caldo <- 48.35
 
 cover <- c("cold","heet")
-
-before <- c(2746192,2234580)
-after <- c(1935455,2386297)
+before <- c(2746192,1935455)
+after <- c(2386297,2234580)
 output <- data.frame(cover,before,after)
 View(output)
 
 library(ggplot2)
-p1 <- ggplot(output, aes(x=cover,y=before,color=cover))+geom_bar(stat = "identity",fill="white")+ylim(0,60000)
+p1 <- ggplot(output, aes(x=cover,y=before,color=cover))+geom_bar(stat = "identity",fill="white")
 plot(p1)
 p2 <- ggplot(output, aes(x=cover,y=after,color=cover))+geom_bar(stat = "identity",fill="white")
 plot(p2)
 
 library(gridExtra)
-
 grid.arrange(p1,p2,nrow=1)
 
 #mettendo a confronto le immagini del 2017 con quelle del 2020 abbiamo un aumento
@@ -1519,16 +1528,16 @@ plot(h2020itm$map,col=colit,main = "11-05-2020")
 freq(h2017itm$map)
 
 #value  count
-#[1,]     1 33005 min
-#[2,]     2 45725 max
+#[1,]     1 33005 max
+#[2,]     2 45725 min
 
 tot2017itm <- 33005+45725
 
 freq((h2020itm$map))
 
 #value  count
-#[1,]     1 56744
-#[2,]     2 20626
+#[1,]     1 56744 min
+#[2,]     2 20626 max
 
 tot2020itm <- 56744+20626
 
@@ -1536,27 +1545,28 @@ tot2020itm <- 56744+20626
 #percentuali
 
 percent2017itm <- freq(h2017itm$map)*100/tot2017itm
+percent2017itm
+#freddo <- 58.0
+#caldo <- 41.9
 
 percent2020itm <- freq(h2020itm$map)*100/tot2020itm
+percent2020itm
+#freddo <- 40.1
+#caldo <- 59.8
 
 cover <- c("cold","heet")
-
-before <- c(33005,56744)
-after <- c(45725,20626)
-outputitm <- data.frame(cover,before,after)
-View(outputitm)
+before <- c(45725,33005)
+after <- c(56744,20626)
+outputit <- data.frame(cover,before,after)
+View(outputit)
 
 library(ggplot2)
-p1 <- ggplot(outputitm, aes(x=cover,y=before,color=cover))+geom_bar(stat = "identity",fill="white")
+p1 <- ggplot(output, aes(x=cover,y=before,color=cover))+geom_bar(stat = "identity",fill="white")
 plot(p1)
-p2 <- ggplot(outputitm, aes(x=cover,y=after,color=cover))+geom_bar(stat = "identity",fill="white")
+p2 <- ggplot(output, aes(x=cover,y=after,color=cover))+geom_bar(stat = "identity",fill="white")
 plot(p2)
 
 library(gridExtra)
-
 grid.arrange(p1,p2,nrow=1)
 
-#si nota che nel 11-05-2017 si ha una temperatura nettamente maggiore riispetto all'anno 2020
-
-
-
+#si nota che nel 11-05-2017 si ha uno stato di salute della vegetazione peggiore riispetto all'anno 2020
