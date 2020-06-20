@@ -12,7 +12,7 @@
 #10. R_code_patches.r  
 #11. R_code_crop.r
 #12. R_code_Species_Distribution_Modelling
-
+#13. R_code_Exam_Project
 
 #dati copernicus Website 
 https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
@@ -22,6 +22,8 @@ https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
 ###1 R code Lezione 1
 
 #installiamo la nuova libreria tramite i pacchetti; se usiamo R invece di R-studio useremo il comando    PF
+#I package forniscono uno strumento semplice ed efficiente per gestire collezioni di funzioni e di dati   PF
+#(librerie) e la relativa documentazione.  PF
 
 install.packages("sp")
 
@@ -48,13 +50,13 @@ summary(meuse)
 #con pairs si crea un grafico che mette in correlazione le variabili dei dati;  PF 
 pairs(meuse)
 
-#il simbolo messo prima di cadmium ci fa mettere in correlazione solamente le variabili da noi specificate,    PF 
+#il simbolo (~) messo prima di cadmium ci fa mettere in correlazione solamente le variabili da noi specificate,    PF 
 #impostando i dati uguali a meuse   PF
 pairs(~cadmium+copper+lead,data=meuse)
 
 pairs(~cadmium+copper+lead+zinc,data = meuse)
 
-#essendo i dati interessati relativamente al 3,4,5 e 6 riga della colonna un metodo alternativo è questo;    PF
+#essendo i dati interessati relativamente al 3, 4, 5 e 6 riga della colonna un metodo alternativo è questo;    PF
 pairs(meuse[,3:6])
 
 #aggiungendo col="red", cambierà il colore di visualizzazioine del grafico;    PF
